@@ -101,7 +101,7 @@ public class TileManager : ScriptableObject
 
 	private bool IsBuildingWithinGridBounds(Vector2Int tileIndex, Vector2Int buildingSize)
     {
-		if (tileIndex.x < 0 || tileIndex.y < 0 || tileIndex.x + buildingSize.x >= m_gridSize.x || tileIndex.y + buildingSize.y >= m_gridSize.y)
+		if (tileIndex.x < 0 || tileIndex.y < 0 || tileIndex.x + buildingSize.x > m_gridSize.x || tileIndex.y + buildingSize.y > m_gridSize.y)
 		{
 			return false;
 		}
