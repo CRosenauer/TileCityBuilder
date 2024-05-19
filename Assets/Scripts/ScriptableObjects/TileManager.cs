@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "TileManager", menuName = "Singletons/TileManager", order = 1)]
+[CreateAssetMenu(fileName = "TileManager", menuName = "Singletons/TileManager")]
 public class TileManager : ScriptableObject
 {
 	[SerializeField]
@@ -10,6 +10,9 @@ public class TileManager : ScriptableObject
 	[SerializeField]
 	Vector2Int m_gridSize;
 
+	public Vector2Int GridSize { get { return m_gridSize; } }
+
+	// do scriptable objects support ctors?
 	public void Init()
     {
 		m_tileGrid = new(m_gridSize.x);
@@ -59,15 +62,15 @@ public class TileManager : ScriptableObject
 		}
 	}
 
-	public void TryPlaceBuilding(GameObject buildingPrefab, Vector2Int tileIndex)
+	public void TryPlaceBuilding(GameObject buildingPrefab, bool rotate, Vector2Int tileIndex)
     {
-		if(!CanInstantiateBuilding(buildingPrefab, tileIndex))
+		if(!CanInstantiateBuilding(buildingPrefab, rotate, tileIndex))
 		{
 			Debug.Log($"TileManager - TryPlaceBuilding: failed to place {buildingPrefab.name} at {tileIndex}");
 			return;
         }
 
-		InstantiateBuilding(buildingPrefab, tileIndex);
+		InstantiateBuilding(buildingPrefab, rotate, tileIndex);
 	}
 
 	public void ReevaluateScore()
@@ -75,7 +78,7 @@ public class TileManager : ScriptableObject
 
     }
 
-	private bool CanInstantiateBuilding(GameObject buildingPrefab, Vector2Int tileIndex)
+	private bool CanInstantiateBuilding(GameObject buildingPrefab, bool rotate, Vector2Int tileIndex)
     {
 		if(buildingPrefab == null)
         {
@@ -89,12 +92,14 @@ public class TileManager : ScriptableObject
 			return false;
 		}
 
-		if (!IsBuildingWithinGridBounds(tileIndex, building.BuildingSize))
+		Vector2Int buildingSize = rotate ? new(building.BuildingSize.y, building.BuildingSize.x) : building.BuildingSize;
+
+		if (!IsBuildingWithinGridBounds(tileIndex, buildingSize))
 		{
 			return false;
 		}
 
-		if(DoTilesContainBuilding(tileIndex, building.BuildingSize))
+		if(DoTilesContainBuilding(tileIndex, buildingSize))
         {
 			return false;
         }
@@ -130,16 +135,27 @@ public class TileManager : ScriptableObject
 		return false;
     }
 
-	private void InstantiateBuilding(GameObject buildingPrefab, Vector2Int tileIndex)
+	private void InstantiateBuilding(GameObject buildingPrefab, bool rotate, Vector2Int tileIndex)
     {
 		GameObject building = Instantiate(buildingPrefab);
 		building.transform.position = new(tileIndex.x, 1f, tileIndex.y);
 
 		Building buildingComponent = building.GetComponent<Building>();
 
-		for (int i = tileIndex.x; i < tileIndex.x + buildingComponent.BuildingSize.x; ++i)
+		Vector2Int buildingSize;
+		if(rotate)
+        {
+			buildingSize = new(buildingComponent.BuildingSize.y, buildingComponent.BuildingSize.x);
+			building.transform.rotation = Quaternion.Euler(new(0f, 90f, 0f));
+		}
+		else
+        {
+			buildingSize = buildingComponent.BuildingSize;
+		}
+
+		for (int i = tileIndex.x; i < tileIndex.x + buildingSize.x; ++i)
 		{
-			for (int ii = tileIndex.y; ii < tileIndex.y + buildingComponent.BuildingSize.y; ++ii)
+			for (int ii = tileIndex.y; ii < tileIndex.y + buildingSize.y; ++ii)
 			{
 				Tile tile = m_tileGrid[i][ii].GetComponent<Tile>();
 				tile.Building = building;

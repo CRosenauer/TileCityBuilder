@@ -22,6 +22,8 @@ public class CameraController : MonoBehaviour
 
 		transform.position += transform.right * horizontalMovement + flattednedCameraForward * verticalMovement;
 
+		// todo: rotate camera around map center. give illusion of map rotating
+		// todo: camera bounds
 		float rotation = Input.GetAxis("Rotate") * m_cameraRotateSpeed * Time.deltaTime;
 		Vector3 cameraOrientation = transform.rotation.eulerAngles;
 		cameraOrientation.y += rotation;
