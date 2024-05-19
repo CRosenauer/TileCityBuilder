@@ -70,6 +70,11 @@ public class TileManager : ScriptableObject
 		InstantiateBuilding(buildingPrefab, tileIndex);
 	}
 
+	public void ReevaluateScore()
+    {
+
+    }
+
 	private bool CanInstantiateBuilding(GameObject buildingPrefab, Vector2Int tileIndex)
     {
 		if(buildingPrefab == null)
@@ -93,8 +98,6 @@ public class TileManager : ScriptableObject
         {
 			return false;
         }
-
-		InstantiateBuilding(buildingPrefab, tileIndex);
 
 		return true;
 	}
