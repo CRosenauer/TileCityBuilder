@@ -136,6 +136,8 @@ MonoBehaviour:
   m_buildingProperty: 1
   m_villagerCapacity: 12
   m_productionCapacity: 0
+  m_improvementMultiplier: 0
+  m_improvementRange: 0
 --- !u!1 &5270524852360677877
 GameObject:
   m_ObjectHideFlags: 0

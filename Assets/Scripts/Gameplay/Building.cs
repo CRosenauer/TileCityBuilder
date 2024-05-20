@@ -37,7 +37,19 @@ public class Building : MonoBehaviour
 		Tavern = Employment | Entertainment,
 		Colosseum = Employment | Entertainment,
 		Church = Employment | Religion,
+		Park = Entertainment,
 	}
+
+	public float EmploymentRatio
+    {
+		get
+		{
+			return m_villagers.Count / m_villagerCapacity;
+		}
+    }
+
+	public IEnumerable<Villager> Villagers => m_villagers;
+	public int VillagerCount => m_villagers.Count;
 
 	public Vector2Int BuildingSize { get { return m_buildingSize; } }
 
@@ -50,19 +62,28 @@ public class Building : MonoBehaviour
 	public int ImprovementRange => m_improvementRange;
 
 	public bool IsAtVillagerCapacity { get { return m_villagers.Count >= m_villagerCapacity; } }
+
+	public int ProductionCapacity
+    {
+        get
+        {
+			float villagerRatio = ((float)m_villagers.Count) / ((float)m_villagerCapacity);
+			float realProductionCapacity = m_productionCapacity * villagerRatio;
+
+			if (ImprovementBuilding)
+			{
+				realProductionCapacity *= ImprovementBuilding.ImprovementMultiplier;
+			}
+
+			return (int) realProductionCapacity;
+        }
+    }
+
 	public bool IsAtProductionCapacity
 	{
 		get
 		{
-			float villagerRatio = m_villagers.Count / m_villagerCapacity;
-			float realProductionCapacity = m_productionCapacity * villagerRatio;
-
-			if(ImprovementBuilding)
-            {
-				realProductionCapacity *= ImprovementBuilding.ImprovementMultiplier;
-            }
-
-			return m_production >= realProductionCapacity;
+			return m_production >= ProductionCapacity;
 		}
 	}
 
@@ -116,8 +137,6 @@ public class Building : MonoBehaviour
 			}
         }
 	}
-
-	public IEnumerable<Villager> Villagers => m_villagers;
 
 	private List<Villager> m_villagers;
 	private int m_production;

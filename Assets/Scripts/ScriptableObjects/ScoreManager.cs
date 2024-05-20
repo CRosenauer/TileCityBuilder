@@ -16,6 +16,12 @@ public class ScoreManager : ScriptableObject
     [SerializeField]
     private int m_foodScore;
 
+    [SerializeField]
+    private int m_churchScore;
+
+    [SerializeField]
+    private int m_entertainmentScore;
+
     public int Score { private set; get; }
 
 	public void RecalculateScore()
@@ -51,6 +57,16 @@ public class ScoreManager : ScriptableObject
                     {
                         Score += m_foodScore;
                     }
+
+                    if(TryFindEntertainment(distanceTable, villager, tile.TileIndex))
+                    {
+                        Score += m_entertainmentScore;
+                    }
+
+                    if (TryFindReligionSource(distanceTable, villager, tile.TileIndex))
+                    {
+                        Score += m_churchScore;
+                    }
                 }
             }
         }
@@ -68,6 +84,12 @@ public class ScoreManager : ScriptableObject
         {
             villager.Work = job;
             job.AddVillager(villager);
+
+            if(job.HasProperty(Building.BuildingProperty.ProductionImprovement))
+            {
+                // apply improvement multiplier to appropriate buildings
+            }
+
             return true;
         }
 
@@ -82,7 +104,7 @@ public class ScoreManager : ScriptableObject
         }
 
         // can we run into the state where we have food but no job?
-        if (!villager.HasFood)
+        if (villager.HasFood)
         {
             return true;
         }
@@ -98,6 +120,52 @@ public class ScoreManager : ScriptableObject
         return false;
     }
 
+    private bool TryFindEntertainment(float[,] distanceTable, Villager villager, Vector2Int tileIndex)
+    {
+        if (!villager.HasJob)
+        {
+            return false;
+        }
+
+        if(villager.HasEntertainment)
+        {
+            return true;
+        }
+
+        Building entertainment = FindEntertainment(distanceTable, tileIndex);
+        if(entertainment != null)
+        {
+            villager.EntertainmentSource = entertainment;
+            entertainment.IncrementProductionCapacity();
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool TryFindReligionSource(float[,] distanceTable, Villager villager, Vector2Int tileIndex)
+    {
+        if (!villager.HasJob)
+        {
+            return false;
+        }
+
+        if (villager.HasChurch)
+        {
+            return true;
+        }
+
+        Building church = FindChurch(distanceTable, tileIndex);
+        if (church != null)
+        {
+            villager.ReligionSource = church;
+            church.IncrementProductionCapacity();
+            return church;
+        }
+
+        return false;
+    }
+
     private Building FindJob(float[, ] distanceTable, Vector2Int startCoordinate)
     {
         return FindAvailableBuilding(distanceTable, startCoordinate, Building.BuildingProperty.Employment, true);
@@ -106,6 +174,16 @@ public class ScoreManager : ScriptableObject
     private Building FindFoodSource(float[, ] distanceTable, Vector2Int startCoordinate)
     {
         return FindAvailableBuilding(distanceTable, startCoordinate, Building.BuildingProperty.FoodGenerating, false);
+    }
+
+    private Building FindChurch(float[,] distanceTable, Vector2Int startCoordinate)
+    {
+        return FindAvailableBuilding(distanceTable, startCoordinate, Building.BuildingProperty.Religion, true);
+    }
+
+    private Building FindEntertainment(float[,] distanceTable, Vector2Int startCoordinate)
+    {
+        return FindAvailableBuilding(distanceTable, startCoordinate, Building.BuildingProperty.Entertainment, true);
     }
 
     private Building FindAvailableBuilding(float[,] distanceTable, Vector2Int startCoordinate, Building.BuildingProperty buildingProperty, bool isVillagerCapacity)
@@ -159,7 +237,8 @@ public class ScoreManager : ScriptableObject
         return nearestBuilding;
     }
 
-    private int TileCoordinateToIndex(Vector2Int tileCoordinate)
+    // todo: move to helpers
+    public int TileCoordinateToIndex(Vector2Int tileCoordinate)
     {
         if(tileCoordinate.x >= m_tileManager.GridSize.x)
         {
@@ -173,7 +252,7 @@ public class ScoreManager : ScriptableObject
         return tileCoordinate.x + m_tileManager.GridSize.x * tileCoordinate.y;
     }
 
-    private Vector2Int IndexToTileCoordinate(int index)
+    public Vector2Int IndexToTileCoordinate(int index)
     {
         return new Vector2Int(index % m_tileManager.GridSize.x, index / m_tileManager.GridSize.x);
     }

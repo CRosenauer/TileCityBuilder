@@ -50,3 +50,4 @@ MonoBehaviour:
   m_vailidityPredictorPrefab: {fileID: 1698609087938453526, guid: cc195112268c932408b0a5932dba8a55, type: 3}
   m_validPlacementColor: {r: 0, g: 1, b: 0, a: 0}
   m_invalidPlacementColor: {r: 1, g: 0, b: 0, a: 0}
+  m_filterOverlayPrefab: {fileID: 7107888765355000477, guid: 90cef86cae0a19546842fbfc55cb0a9b, type: 3}
