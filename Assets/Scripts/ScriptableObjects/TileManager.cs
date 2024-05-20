@@ -40,8 +40,8 @@ public class TileManager : ScriptableObject
         {
 			for(int ii = 0; ii < m_gridSize.y; ++ii)
 			{
-
-				m_tileGrid[i][ii] = Instantiate(m_tilePrefab);
+				GameObject tileObject = Instantiate(m_tilePrefab);
+				m_tileGrid[i][ii] = tileObject.GetComponent<Tile>();
 
 				InitializeTile(m_tileGrid[i][ii], i, ii);
 			}
@@ -56,7 +56,7 @@ public class TileManager : ScriptableObject
 			{
 				if(m_tileGrid[i][ii] != null)
                 {
-					Destroy(m_tileGrid[i][ii]);
+					Destroy(m_tileGrid[i][ii].gameObject);
 				}
 			}
 		}
@@ -123,9 +123,7 @@ public class TileManager : ScriptableObject
         {
 			for (int ii = tileIndex.y; ii < tileIndex.y + buildingSize.y; ++ii)
 			{
-				Tile tile = m_tileGrid[i][ii].GetComponent<Tile>();
-
-				if(tile.Building != null)
+				if(m_tileGrid[i][ii].Building != null)
                 {
 					return true;
                 }
@@ -157,18 +155,16 @@ public class TileManager : ScriptableObject
 		{
 			for (int ii = tileIndex.y; ii < tileIndex.y + buildingSize.y; ++ii)
 			{
-				Tile tile = m_tileGrid[i][ii].GetComponent<Tile>();
-				tile.Building = building;
+				m_tileGrid[i][ii].Building = building;
 			}
 		}
 	}
 
-	private void InitializeTile(GameObject tile, int xIndex, int yIndex)
+	private void InitializeTile(Tile tile, int xIndex, int yIndex)
     {
 		tile.transform.position = new(xIndex, 0f, yIndex);
-		Tile tileComponent = tile.GetComponent<Tile>();
-		tileComponent.Initialize(xIndex, yIndex);
+		tile.Initialize(xIndex, yIndex);
 	}
 
-	private List<List<GameObject>> m_tileGrid;
+	private List<List<Tile>> m_tileGrid;
 }
