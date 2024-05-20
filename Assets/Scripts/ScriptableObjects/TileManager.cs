@@ -66,7 +66,7 @@ public class TileManager : ScriptableObject
     {
 		if(!CanInstantiateBuilding(buildingPrefab, rotate, tileIndex))
 		{
-			Debug.Log($"TileManager - TryPlaceBuilding: failed to place {buildingPrefab.name} at {tileIndex}");
+			Debug.Log($"TileManager - TryPlaceBuilding: failed to place {buildingPrefab?.name} at {tileIndex}");
 			return;
         }
 
@@ -146,7 +146,7 @@ public class TileManager : ScriptableObject
 		if(rotate)
         {
 			buildingSize = new(buildingComponent.BuildingSize.y, buildingComponent.BuildingSize.x);
-			building.transform.rotation = Quaternion.Euler(new(0f, 90f, 0f));
+			building.transform.rotation = Quaternion.Euler(new(0f, -90f, 0f));
 		}
 		else
         {

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Building : MonoBehaviour
@@ -8,6 +9,9 @@ public class Building : MonoBehaviour
 	[SerializeField]
 	BuildingProperty m_buildingProperty;
 
+	[SerializeField]
+	readonly int m_villagerCapacity;
+
 	public enum BuildingProperty
     {
 		House,
@@ -15,7 +19,24 @@ public class Building : MonoBehaviour
 		Farm
     }
 
-	public Vector2Int BuildingSize { get { return m_buildingSize; } }
+    private void Awake()
+    {
+		m_villagers = new(m_villagerCapacity);
+
+		if(m_buildingProperty == BuildingProperty.House)
+        {
+			for(int i = 0; i < m_villagerCapacity; ++i)
+            {
+				m_villagers.Add(new Villager(this));
+			}
+        }
+	}
+
+    public Vector2Int BuildingSize { get { return m_buildingSize; } }
 
 	public BuildingProperty Property { get { return m_buildingProperty; } }
+
+	public IEnumerable<Villager> Villagers => m_villagers;
+
+	private List<Villager> m_villagers;
 }
