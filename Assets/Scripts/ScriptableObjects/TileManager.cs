@@ -80,12 +80,7 @@ public class TileManager : ScriptableObject
 		return true;
 	}
 
-	public void ReevaluateScore()
-    {
-
-    }
-
-	private bool CanInstantiateBuilding(GameObject buildingPrefab, bool rotate, Vector2Int tileIndex)
+	public bool CanInstantiateBuilding(GameObject buildingPrefab, bool rotate, Vector2Int tileIndex)
     {
 		if(buildingPrefab == null)
         {
@@ -152,6 +147,7 @@ public class TileManager : ScriptableObject
         {
 			buildingSize = new(buildingComponent.BuildingSize.y, buildingComponent.BuildingSize.x);
 			building.transform.rotation = Quaternion.Euler(new(0f, -90f, 0f));
+			building.transform.position += new Vector3(buildingComponent.BuildingSize.y - 1, 0f, 0f);
 		}
 		else
         {

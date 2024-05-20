@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: TileManager
   m_EditorClassIdentifier: 
   m_tilePrefab: {fileID: 1612430140153306091, guid: 20827a18ff1b20a469e341c397f84ce1, type: 3}
-  m_gridSize: {x: 16, y: 16}
+  m_gridSize: {x: 8, y: 8}

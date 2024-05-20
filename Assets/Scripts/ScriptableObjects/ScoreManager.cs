@@ -42,53 +42,60 @@ public class ScoreManager : ScriptableObject
 
                 foreach(Villager villager in building.Villagers)
                 {
-                    // todo: reduce copy pasta
-                    bool hasJob = false;
-                    if(!villager.HasJob)
-                    {
-                        Building job = FindJob(distanceTable, tile.TileIndex);
-                        if(job != null)
-                        {
-                            hasJob = true;
-
-                            villager.Work = job;
-                            job.AddVillager(villager);
-                        }
-                    }
-                    else
-                    {
-                        hasJob = true;
-                    }
-
-                    if(hasJob)
+                    if(TryFindJob(distanceTable, villager, tile.TileIndex))
                     {
                         Score += m_workerScore;
+                    }
 
-                        bool hasFood = false;
-                        if(!villager.HasFood)
-                        {
-                            Building foodSource = FindFoodSource(distanceTable, tile.TileIndex);
-                            if (foodSource != null)
-                            {
-                                hasFood = true;
-
-                                villager.FoodSource = foodSource;
-                                foodSource.IncrementProductionCapacity();
-                            }
-                        }
-                        else
-                        {
-                            hasFood = true;
-                        }
-
-                        if(hasFood)
-                        {
-                            Score += m_foodScore;
-                        }
+                    if(TryFindFoodSource(distanceTable, villager, tile.TileIndex))
+                    {
+                        Score += m_foodScore;
                     }
                 }
             }
         }
+    }
+
+    private bool TryFindJob(float[,] distanceTable, Villager villager, Vector2Int tileIndex)
+    {
+        if (villager.HasJob)
+        {
+            return true;
+        }
+
+        Building job = FindJob(distanceTable, tileIndex);
+        if (job != null)
+        {
+            villager.Work = job;
+            job.AddVillager(villager);
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool TryFindFoodSource(float[,] distanceTable, Villager villager, Vector2Int tileIndex)
+    {
+        if(!villager.HasJob)
+        {
+            return false;
+        }
+
+        // can we run into the state where we have food but no job?
+        if (!villager.HasFood)
+        {
+            return true;
+        }
+
+        Building foodSource = FindFoodSource(distanceTable, tileIndex);
+        if (foodSource != null)
+        {
+            villager.FoodSource = foodSource;
+            foodSource.IncrementProductionCapacity();
+            return true;
+        }
+        
+        return false;
     }
 
     private Building FindJob(float[, ] distanceTable, Vector2Int startCoordinate)

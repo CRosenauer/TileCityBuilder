@@ -44,5 +44,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb0c920027fa0c74cb2dcac290c36cc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_tileManager: {fileID: 11400000, guid: cdd17d0ef00ff8749b6aa2185b52b661, type: 2}
   m_buildingSelectionManager: {fileID: 11400000, guid: d6b6ffcff0ba1b64d91672bf9386727e, type: 2}
   m_scoreManager: {fileID: 11400000, guid: 6e12cc2fdba886f4f945ea064211ad76, type: 2}
+  m_vailidityPredictorPrefab: {fileID: 1698609087938453526, guid: cc195112268c932408b0a5932dba8a55, type: 3}
+  m_validPlacementColor: {r: 0, g: 1, b: 0, a: 0}
+  m_invalidPlacementColor: {r: 1, g: 0, b: 0, a: 0}

@@ -15,22 +15,56 @@ public class Building : MonoBehaviour
 	[SerializeField]
 	int m_productionCapacity;
 
+	[SerializeField]
+	float m_improvementMultiplier;
+
+	[SerializeField]
+	int m_improvementRange;
+
 	public enum BuildingProperty
     {
 		House = 1 << 0,
 		Road = 1 << 1,
 		Employment = 1 << 2,
 		FoodGenerating = 1 << 3,
+		ProductionImprovement = 1 << 4,
+		Entertainment = 1 << 5,
+		Religion = 1 << 6,
 
 		Farm = Employment | FoodGenerating,
+
+		Windmill = Employment | ProductionImprovement,
+		Tavern = Employment | Entertainment,
+		Colosseum = Employment | Entertainment,
+		Church = Employment | Religion,
 	}
 
 	public Vector2Int BuildingSize { get { return m_buildingSize; } }
 
 	public BuildingProperty Property { get { return m_buildingProperty; } }
 
+	public Building ImprovementBuilding { get; set; }
+
+	public float ImprovementMultiplier => m_improvementMultiplier;
+
+	public int ImprovementRange => m_improvementRange;
+
 	public bool IsAtVillagerCapacity { get { return m_villagers.Count >= m_villagerCapacity; } }
-	public bool IsAtProductionCapacity { get { return m_production >= m_productionCapacity; } }
+	public bool IsAtProductionCapacity
+	{
+		get
+		{
+			float villagerRatio = m_villagers.Count / m_villagerCapacity;
+			float realProductionCapacity = m_productionCapacity * villagerRatio;
+
+			if(ImprovementBuilding)
+            {
+				realProductionCapacity *= ImprovementBuilding.ImprovementMultiplier;
+            }
+
+			return m_production >= realProductionCapacity;
+		}
+	}
 
 	public void AddVillager(Villager villager)
 	{
