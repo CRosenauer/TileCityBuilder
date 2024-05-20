@@ -152,7 +152,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_buildingSize: {x: 1, y: 1}
-  m_buildingProperty: 1
+  m_buildingProperty: 2
+  m_villagerCapacity: 0
+  m_productionCapacity: 0
 --- !u!1 &8513433512227494519
 GameObject:
   m_ObjectHideFlags: 0

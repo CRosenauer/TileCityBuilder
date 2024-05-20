@@ -154,6 +154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_tileManager: {fileID: 11400000, guid: cdd17d0ef00ff8749b6aa2185b52b661, type: 2}
   m_buildingSelectionManager: {fileID: 11400000, guid: d6b6ffcff0ba1b64d91672bf9386727e, type: 2}
+  m_scoreManager: {fileID: 11400000, guid: 6e12cc2fdba886f4f945ea064211ad76, type: 2}
   m_buildingPrefab: {fileID: 4894760642533768608, guid: 43d36ca64d364a9429db17a709cbaf08, type: 3}
 --- !u!54 &-1801625976220633405
 Rigidbody:

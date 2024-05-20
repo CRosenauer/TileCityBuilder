@@ -45,11 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_buildingSelectionManager: {fileID: 11400000, guid: d6b6ffcff0ba1b64d91672bf9386727e, type: 2}
-  m_buildingPrefabs:
-  - {fileID: 4555552852197309254, guid: 18b59dcf77fb3eb459862377c101a3e8, type: 3}
-  - {fileID: 3411716088472856282, guid: ffac5902f5d9d604496f6147346e30b0, type: 3}
-  - {fileID: 4593807557914389314, guid: 8e4f8e416af552a458d5335bd651419d, type: 3}
-  - {fileID: 5198031283228751129, guid: b466a3c2dcde7534ba9c7387e88d0f81, type: 3}
-  - {fileID: 7007211889419240410, guid: 1c28509f3f65de64798c6673b0c1a127, type: 3}
-  - {fileID: 2425926672581094689, guid: 3f874a6f15a866747b82b2f04d04eca0, type: 3}
-  - {fileID: 4894760642533768608, guid: 43d36ca64d364a9429db17a709cbaf08, type: 3}
+  m_scoreManager: {fileID: 11400000, guid: 6e12cc2fdba886f4f945ea064211ad76, type: 2}

@@ -45,3 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_tileManager: {fileID: 11400000, guid: cdd17d0ef00ff8749b6aa2185b52b661, type: 2}
+  m_buildingSelectionManager: {fileID: 11400000, guid: d6b6ffcff0ba1b64d91672bf9386727e, type: 2}

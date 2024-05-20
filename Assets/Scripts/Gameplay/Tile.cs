@@ -9,7 +9,12 @@ public class Tile : MonoBehaviour
 	private BuildingSelectionManager m_buildingSelectionManager;
 
 	[SerializeField]
+	private ScoreManager m_scoreManager;
+
+	[SerializeField]
 	private GameObject m_buildingPrefab;
+
+	public Vector2Int TileIndex => m_tileIndex;
 
 	public void Initialize(int xIndex, int yIndex)
     {
@@ -21,10 +26,14 @@ public class Tile : MonoBehaviour
     private void OnMouseDown()
     {
 		Debug.Log($"Tile - OnMouseDown: attempting to place {m_buildingPrefab.name} at {m_tileIndex}");
-		m_tileManager.TryPlaceBuilding(m_buildingSelectionManager.BuildingPrefab, m_buildingSelectionManager.Rotate, m_tileIndex);
+		if(m_tileManager.TryPlaceBuilding(m_buildingSelectionManager.BuildingPrefab, m_buildingSelectionManager.Rotate, m_tileIndex))
+		{
+			m_buildingSelectionManager.RepopulateAvailableBuildings();
+			m_scoreManager.RecalculateScore();
+		}
 	}
 
-    public GameObject Building { set; get; }
+    public Building Building { set; get; }
 
 	Vector2Int m_tileIndex;
 }

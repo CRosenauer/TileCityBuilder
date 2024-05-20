@@ -11,6 +11,7 @@ public class TileManager : ScriptableObject
 	Vector2Int m_gridSize;
 
 	public Vector2Int GridSize { get { return m_gridSize; } }
+	public IEnumerable<IEnumerable<Tile>> TileGrid => m_tileGrid;
 
 	// do scriptable objects support ctors?
 	public void Init()
@@ -31,6 +32,11 @@ public class TileManager : ScriptableObject
 
 		Physics.queriesHitTriggers = true;
 	}
+
+	public Tile GetTile(Vector2Int coordinate)
+    {
+		return m_tileGrid[coordinate.x][coordinate.y];
+    }
 
     public void GenerateTiles()
 	{
@@ -62,15 +68,16 @@ public class TileManager : ScriptableObject
 		}
 	}
 
-	public void TryPlaceBuilding(GameObject buildingPrefab, bool rotate, Vector2Int tileIndex)
+	public bool TryPlaceBuilding(GameObject buildingPrefab, bool rotate, Vector2Int tileIndex)
     {
 		if(!CanInstantiateBuilding(buildingPrefab, rotate, tileIndex))
 		{
 			Debug.Log($"TileManager - TryPlaceBuilding: failed to place {buildingPrefab?.name} at {tileIndex}");
-			return;
+			return false;
         }
 
 		InstantiateBuilding(buildingPrefab, rotate, tileIndex);
+		return true;
 	}
 
 	public void ReevaluateScore()
@@ -155,7 +162,7 @@ public class TileManager : ScriptableObject
 		{
 			for (int ii = tileIndex.y; ii < tileIndex.y + buildingSize.y; ++ii)
 			{
-				m_tileGrid[i][ii].Building = building;
+				m_tileGrid[i][ii].Building = buildingComponent;
 			}
 		}
 	}

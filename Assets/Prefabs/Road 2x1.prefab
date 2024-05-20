@@ -469,4 +469,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_buildingSize: {x: 2, y: 1}
-  m_buildingProperty: 1
+  m_buildingProperty: 2
+  m_villagerCapacity: 0
+  m_productionCapacity: 0
