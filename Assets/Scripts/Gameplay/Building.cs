@@ -44,6 +44,11 @@ public class Building : MonoBehaviour
     {
 		get
 		{
+			if(m_villagerCapacity == 0)
+            {
+				return 1f;
+            }
+
 			return m_villagers.Count / m_villagerCapacity;
 		}
     }

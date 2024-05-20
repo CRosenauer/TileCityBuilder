@@ -11,6 +11,11 @@ public class Tile : MonoBehaviour
 	[SerializeField]
 	private ScoreManager m_scoreManager;
 
+	[SerializeField]
+	private bool m_isBuildable;
+
+	public bool IsBuildabe => m_isBuildable;
+
 	public Vector2Int TileIndex => m_tileIndex;
 
 	public void Initialize(int xIndex, int yIndex)

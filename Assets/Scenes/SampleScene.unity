@@ -282,17 +282,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2138116127799886103, guid: 3e665d8f796f04c42831d687319b60f0, type: 3}
-      propertyPath: m_validPlacementColor.a
-      value: 0.49803922
-      objectReference: {fileID: 0}
-    - target: {fileID: 2138116127799886103, guid: 3e665d8f796f04c42831d687319b60f0, type: 3}
-      propertyPath: m_invalidPlacementColor.a
-      value: 0.49803922
-      objectReference: {fileID: 0}
     - target: {fileID: 4858596506780418995, guid: 3e665d8f796f04c42831d687319b60f0, type: 3}
       propertyPath: m_Name
       value: UI
+      objectReference: {fileID: 0}
+    - target: {fileID: 8440391983531680616, guid: 3e665d8f796f04c42831d687319b60f0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8440391983531680616, guid: 3e665d8f796f04c42831d687319b60f0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8440391983531680616, guid: 3e665d8f796f04c42831d687319b60f0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8440391983531680616, guid: 3e665d8f796f04c42831d687319b60f0, type: 3}
       propertyPath: m_LocalRotation.w

@@ -105,5 +105,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d22a63d57bf6a4f4292ee3dc136fda97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_cameraScrollSpeed: {x: 5, y: 5}
-  m_cameraRotateSpeed: 15
+  m_cameraScrollSpeed: {x: 7, y: 7}
+  m_cameraRotateSpeed: 30

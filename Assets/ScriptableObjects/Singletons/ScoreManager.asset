@@ -16,3 +16,5 @@ MonoBehaviour:
   m_distanceLimit: 6
   m_workerScore: 10
   m_foodScore: 50
+  m_churchScore: 100
+  m_entertainmentScore: 200

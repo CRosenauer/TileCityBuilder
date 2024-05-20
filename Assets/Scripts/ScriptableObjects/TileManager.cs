@@ -8,6 +8,18 @@ public class TileManager : ScriptableObject
 	GameObject m_tilePrefab;
 
 	[SerializeField]
+	GameObject m_waterPrefab;
+
+	[SerializeField]
+	GameObject m_rockPrefab;
+
+	[SerializeField]
+	float m_waterThreshold;
+
+	[SerializeField]
+	float m_rockThreshold;
+
+	[SerializeField]
 	Vector2Int m_gridSize;
 
 	public Vector2Int GridSize { get { return m_gridSize; } }
@@ -40,13 +52,33 @@ public class TileManager : ScriptableObject
 
     public void GenerateTiles()
 	{
+		m_seed = new(Random.Range(-10f, 10f), Random.Range(-10f, 10f));
+
 		ResetTiles();
 
 		for(int i = 0; i < m_gridSize.x; ++i)
         {
 			for(int ii = 0; ii < m_gridSize.y; ++ii)
 			{
-				GameObject tileObject = Instantiate(m_tilePrefab);
+				Vector2 perlinSample = new(i, ii);
+				perlinSample /= 5f;
+				float perlinNoiseLevel = Mathf.PerlinNoise(perlinSample.x + m_seed.x, perlinSample.y + m_seed.y);
+
+				GameObject tileToInstantiate;
+				if(perlinNoiseLevel < m_waterThreshold)
+                {
+					tileToInstantiate = m_waterPrefab;
+				}
+				else if(perlinNoiseLevel > m_rockThreshold)
+                {
+					tileToInstantiate = m_rockPrefab;
+				}
+				else
+                {
+					tileToInstantiate = m_tilePrefab;
+				}
+
+				GameObject tileObject = Instantiate(tileToInstantiate);
 				m_tileGrid[i][ii] = tileObject.GetComponent<Tile>();
 
 				InitializeTile(m_tileGrid[i][ii], i, ii);
@@ -106,6 +138,11 @@ public class TileManager : ScriptableObject
 			return false;
         }
 
+		if(AreTilesUnbuildable(tileIndex, buildingSize))
+        {
+			return false;
+        }
+
 		return true;
 	}
 
@@ -134,6 +171,22 @@ public class TileManager : ScriptableObject
 
 		return false;
     }
+
+	private bool AreTilesUnbuildable(Vector2Int tileIndex, Vector2Int buildingSize)
+    {
+		for (int i = tileIndex.x; i < tileIndex.x + buildingSize.x; ++i)
+		{
+			for (int ii = tileIndex.y; ii < tileIndex.y + buildingSize.y; ++ii)
+			{
+				if (!m_tileGrid[i][ii].IsBuildabe)
+				{
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
 
 	private void InstantiateBuilding(GameObject buildingPrefab, bool rotate, Vector2Int tileIndex)
     {
@@ -170,4 +223,6 @@ public class TileManager : ScriptableObject
 	}
 
 	private List<List<Tile>> m_tileGrid;
+
+	private Vector2 m_seed;
 }

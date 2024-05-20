@@ -31,6 +31,9 @@ public class GameUI : MonoBehaviour
         m_validityPreditors = new();
         m_buildingSelectionManager.Rotate = false;
 
+        m_buildingSelectionManager.RepopulateAvailableBuildings();
+        OnBuildingSelected();
+
         InitFilterOverlayGameObjects();
     }
 
@@ -57,7 +60,7 @@ public class GameUI : MonoBehaviour
             m_buildingSelectionManager.Rotate = !m_buildingSelectionManager.Rotate;
         }
 
-        if(m_buildingSelectionManager.BuildingPrefab != null)
+        if(m_buildingSelectionManager.BuildingPrefab != null || Input.mousePosition.y < 100)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
@@ -83,36 +86,49 @@ public class GameUI : MonoBehaviour
                     }
                 }
             }
+            else
+            {
+                foreach(GameObject go in m_validityPreditors)
+                {
+                    Destroy(go);
+                }
+                m_validityPreditors.Clear();
+            }
         }
     }
 
     private void OnGUI()
     {
-        GUILayout.BeginHorizontal();
+        Rect screenRect = new(0, Screen.height - 100, Screen.width, 100);
+        GUILayout.BeginArea(screenRect);
         {
-            GUILayout.BeginVertical();
+            GUILayout.BeginHorizontal();
             {
-                int filterButtonSelection = DrawFilterButtons();
-                if(filterButtonSelection != m_filterButtonSelection)
+                GUILayout.BeginVertical();
                 {
-                    m_filterButtonSelection = filterButtonSelection;
-                    UpdateFilter();
+                    int filterButtonSelection = DrawFilterButtons();
+                    if (filterButtonSelection != m_filterButtonSelection)
+                    {
+                        m_filterButtonSelection = filterButtonSelection;
+                        UpdateFilter();
+                    }
                 }
+                GUILayout.EndVertical();
+
+                int selection = DrawAvailableBuildingButtons();
+
+                if (selection != m_buildingSelectionIndex)
+                {
+                    m_buildingSelectionIndex = selection;
+                    OnBuildingSelected();
+                }
+
+                GUILayout.Label($"Score {m_scoreManager.Score}");
+
             }
-            GUILayout.EndVertical();
-
-            int selection = DrawAvailableBuildingButtons();
-
-            if (selection != m_buildingSelectionIndex)
-            {
-                m_buildingSelectionIndex = selection;
-                OnBuildingSelected();
-            }
-
-            GUILayout.Label($"Score {m_scoreManager.Score}");
-
+            GUILayout.EndHorizontal();
         }
-        GUILayout.EndHorizontal();
+        GUILayout.EndArea();
     }
 
     // this is bad...
