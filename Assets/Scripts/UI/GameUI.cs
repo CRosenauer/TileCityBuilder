@@ -60,12 +60,12 @@ public class GameUI : MonoBehaviour
             m_buildingSelectionManager.Rotate = !m_buildingSelectionManager.Rotate;
         }
 
-        if(m_buildingSelectionManager.BuildingPrefab != null || Input.mousePosition.y < 100)
+        if(m_buildingSelectionManager.BuildingPrefab != null)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit))
+            if (Input.mousePosition.y > 100 && Physics.Raycast(ray, out hit) )
             {
                 Collider collider = hit.collider;
                 Tile tile = collider.GetComponent<Tile>();
@@ -102,7 +102,7 @@ public class GameUI : MonoBehaviour
         Rect screenRect = new(0, Screen.height - 100, Screen.width, 100);
         GUILayout.BeginArea(screenRect);
         {
-            GUILayout.BeginHorizontal();
+            GUILayout.BeginVertical();
             {
                 GUILayout.BeginVertical();
                 {
@@ -115,18 +115,25 @@ public class GameUI : MonoBehaviour
                 }
                 GUILayout.EndVertical();
 
-                int selection = DrawAvailableBuildingButtons();
-
-                if (selection != m_buildingSelectionIndex)
+                GUILayout.BeginVertical();
                 {
-                    m_buildingSelectionIndex = selection;
-                    OnBuildingSelected();
+                    int selection = DrawAvailableBuildingButtons();
+
+                    if (selection != m_buildingSelectionIndex)
+                    {
+                        m_buildingSelectionIndex = selection;
+                        OnBuildingSelected();
+                    }
                 }
+                GUILayout.EndVertical();
 
-                GUILayout.Label($"Score {m_scoreManager.Score}");
-
+                GUILayout.BeginVertical();
+                {
+                    GUILayout.Label($"Score {m_scoreManager.Score}");
+                }
+                GUILayout.EndVertical();
             }
-            GUILayout.EndHorizontal();
+            GUILayout.EndVertical();
         }
         GUILayout.EndArea();
     }
