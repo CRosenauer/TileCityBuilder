@@ -22,7 +22,7 @@ public class Building : MonoBehaviour
 	int m_improvementRange;
 
 	public enum BuildingProperty
-    {
+	{
 		House = 1 << 0,
 		Road = 1 << 1,
 		Employment = 1 << 2,
@@ -41,17 +41,17 @@ public class Building : MonoBehaviour
 	}
 
 	public float EmploymentRatio
-    {
+	{
 		get
 		{
-			if(m_villagerCapacity == 0)
-            {
+			if (m_villagerCapacity == 0)
+			{
 				return 1f;
-            }
+			}
 
 			return m_villagers.Count / m_villagerCapacity;
 		}
-    }
+	}
 
 	public IEnumerable<Villager> Villagers => m_villagers;
 	public int VillagerCount => m_villagers.Count;
@@ -69,20 +69,23 @@ public class Building : MonoBehaviour
 	public bool IsAtVillagerCapacity { get { return m_villagers.Count >= m_villagerCapacity; } }
 
 	public int ProductionCapacity
-    {
-        get
-        {
-			float villagerRatio = ((float)m_villagers.Count) / ((float)m_villagerCapacity);
-			float realProductionCapacity = m_productionCapacity * villagerRatio;
+	{
+		get
+		{
+			float improvementMultiplier = ImprovementBuilding ? ImprovementBuilding.ImprovementMultiplier : 1f;
 
-			if (ImprovementBuilding)
+			if (m_villagerCapacity == 0)
 			{
-				realProductionCapacity *= ImprovementBuilding.ImprovementMultiplier;
+				return (int) ((float)m_productionCapacity) * (int)improvementMultiplier;
 			}
 
-			return (int) realProductionCapacity;
-        }
-    }
+			float villagerRatio = ((float)m_villagers.Count) / ((float)m_villagerCapacity);
+			float realProductionCapacity = ((float)m_productionCapacity) * villagerRatio;
+			realProductionCapacity *= improvementMultiplier;
+
+			return (int)realProductionCapacity;
+		}
+	}
 
 	public bool IsAtProductionCapacity
 	{
@@ -92,7 +95,27 @@ public class Building : MonoBehaviour
 		}
 	}
 
-	public void AddVillager(Villager villager)
+	public void Reset()
+	{
+		if (HasProperty(BuildingProperty.House))
+		{
+			foreach (Villager villager in Villagers)
+			{
+				villager.Work = null;
+				villager.FoodSource = null;
+				villager.EntertainmentSource = null;
+				villager.ReligionSource = null;
+			}
+        }
+		else
+        {
+			m_villagers.Clear();
+        }
+
+		m_production = 0;
+    }
+
+    public void AddVillager(Villager villager)
 	{
 		if(!IsAtVillagerCapacity)
 		{

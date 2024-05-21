@@ -722,7 +722,7 @@ MonoBehaviour:
   m_buildingSize: {x: 2, y: 2}
   m_buildingProperty: 12
   m_villagerCapacity: 8
-  m_productionCapacity: 12
+  m_productionCapacity: 16
   m_improvementMultiplier: 0
   m_improvementRange: 0
 --- !u!1 &8223644957471164896

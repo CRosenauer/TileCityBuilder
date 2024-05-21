@@ -28,6 +28,8 @@ public class ScoreManager : ScriptableObject
     {
         Score = 0;
 
+        ResetAllJobsAndServices();
+
         float[, ] distanceTable = AllPairShortestPath();
 
         foreach (List<Tile> tileColumn in m_tileManager.TileGrid)
@@ -68,6 +70,22 @@ public class ScoreManager : ScriptableObject
                         Score += m_churchScore;
                     }
                 }
+            }
+        }
+    }
+
+    private void ResetAllJobsAndServices()
+    {
+        foreach(IEnumerable<Tile> tileColumn in m_tileManager.TileGrid)
+        {
+            foreach(Tile tile in tileColumn)
+            {
+                if(tile.Building == null)
+                {
+                    continue;
+                }
+
+                tile.Building.Reset();
             }
         }
     }
@@ -178,12 +196,12 @@ public class ScoreManager : ScriptableObject
 
     private Building FindChurch(float[,] distanceTable, Vector2Int startCoordinate)
     {
-        return FindAvailableBuilding(distanceTable, startCoordinate, Building.BuildingProperty.Religion, true);
+        return FindAvailableBuilding(distanceTable, startCoordinate, Building.BuildingProperty.Religion, false);
     }
 
     private Building FindEntertainment(float[,] distanceTable, Vector2Int startCoordinate)
     {
-        return FindAvailableBuilding(distanceTable, startCoordinate, Building.BuildingProperty.Entertainment, true);
+        return FindAvailableBuilding(distanceTable, startCoordinate, Building.BuildingProperty.Entertainment, false);
     }
 
     private Building FindAvailableBuilding(float[,] distanceTable, Vector2Int startCoordinate, Building.BuildingProperty buildingProperty, bool isVillagerCapacity)

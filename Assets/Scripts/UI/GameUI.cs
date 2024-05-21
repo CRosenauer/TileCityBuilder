@@ -65,7 +65,7 @@ public class GameUI : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
-            if (Input.mousePosition.y > 100 && Physics.Raycast(ray, out hit) )
+            if (Input.mousePosition.y > 120 && Physics.Raycast(ray, out hit) )
             {
                 Collider collider = hit.collider;
                 Tile tile = collider.GetComponent<Tile>();

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ScoreManager
   m_EditorClassIdentifier: 
   m_tileManager: {fileID: 11400000, guid: cdd17d0ef00ff8749b6aa2185b52b661, type: 2}
-  m_distanceLimit: 6
+  m_distanceLimit: 9
   m_workerScore: 10
   m_foodScore: 50
   m_churchScore: 100
