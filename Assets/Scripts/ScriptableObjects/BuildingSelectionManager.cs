@@ -15,11 +15,6 @@ public class BuildingSelectionManager : ScriptableObject
     
     public GameObject[] AvailableBuildings { get { return m_availableBuildings; } }
 
-    public void Init()
-    {
-        RepopulateAvailableBuildings();
-    }
-
     public void RepopulateAvailableBuildings()
     {
         List<GameObject> buildingPrefabs = new();

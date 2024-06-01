@@ -30,6 +30,7 @@ public class GameUI : MonoBehaviour
     {
         m_validityPreditors = new();
         m_buildingSelectionManager.Rotate = false;
+        m_buildingSelectionIndex = 0;
 
         m_buildingSelectionManager.RepopulateAvailableBuildings();
         OnBuildingSelected();

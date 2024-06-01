@@ -11,6 +11,5 @@ public class SingletonContainer : MonoBehaviour
     private void Awake()
     {
         m_tileManager.Init();
-        m_buildingSelectionManager.Init();
     }
 }
