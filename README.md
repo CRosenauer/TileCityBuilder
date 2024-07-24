@@ -1,6 +1,6 @@
 TileCityBuilder
 
-Player on itch io: https://crosenauer.itch.io/tile-city-builder
+Play on itch io: https://crosenauer.itch.io/tile-city-builder
 
 ![DOQKEk](https://github.com/user-attachments/assets/aca224a9-12fe-459c-b664-b740ace399c3)
 
